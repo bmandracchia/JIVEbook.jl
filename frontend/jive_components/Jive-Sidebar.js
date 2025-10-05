@@ -61,7 +61,7 @@ closeBtn.onclick = w3_close
 // TITLE
 const titleDiv = document.createElement("div")
 titleDiv.className = "jv-container "
-titleDiv.innerHTML = '<h2> <img width="50"  src="./img/jive_logo.png"></img>  </h2> <md-block> ###### v.0.0  \n --- </md-block>'
+titleDiv.innerHTML = '<h2> <img width="50"  src="./img/jive_logo.png"></img>  </h2> <md-block> ###### v.0.2  \n --- </md-block>'
 titleDiv.style.textAlign = "center"
 
 // SEARCH BAR
