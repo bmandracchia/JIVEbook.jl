@@ -81,90 +81,13 @@ export function createFileMenu(timeoutValue) {
     // --- Accordion items ---
     // 📂 Open
     const openItems = [
-        createMenuItem("Open Image", function () {
-            var input = document.createElement("input")
-            input.type = "file"
-
-            input.onchange = (e) => {
-                // getting a hold of the file reference
-                var file = e.target.files[0]
-
-                // setting up the reader
-                var reader = new FileReader()
-                reader.readAsArrayBuffer(file)
-
-                // here we tell the reader what to do when it's done reading...
-                reader.onload = (readerEvent) => {
-                    var content = readerEvent.target.result // this is the content!
-                    console.log(content)
-
-                    // Send file directly as binary data to server
-                    fetch("/upload", {
-                        method: "POST",
-                        body: content,
-                        headers: {
-                            "Content-Type": file.type,
-                            "Filename": file.name,
-                        },
-                    })
-                        .then((response) => response.json())
-                        .then((json) => {
-                            console.log(json)
-                            var path = json.path.replace(/\\/g, "/")
-                            var filename = path.split("/").pop().split(".")[0]
-                            createCellWithCode(
-                                `JIVECore.Process.autoContrast(image_data[JIVECore.Files.loadImage!("${filename}", image_data, image_keys, "${path}")])`
-                            )
-                        })
-                        .catch((error) => {
-                            console.error("Error uploading file:", error)
-                        })
-                }
-            }
-            input.click()
+        createMenuItem("Open Image", async function () {
+            createMDCellWithUI("Load Image", `$(@bind tmp PlutoUI.FilePicker())`)
+            await resolveAfterTimeout(timeoutValue)
+            createCellWithCode(`isnothing(tmp) ? print("Select an image to load") :
+    JIVECore.Visualize.gif(image_data[JIVECore.Files.loadImage!(image_data, image_keys, tmp)])`)
         }),
-        createMenuItem("Open Image Stack", function () {
-            var input = document.createElement("input")
-            input.type = "file"
 
-            input.onchange = (e) => {
-                // getting a hold of the file reference
-                var file = e.target.files[0]
-
-                // setting up the reader
-                var reader = new FileReader()
-                reader.readAsArrayBuffer(file)
-
-                // here we tell the reader what to do when it's done reading...
-                reader.onload = (readerEvent) => {
-                    var content = readerEvent.target.result // this is the content!
-                    console.log(content)
-
-                    // Send file directly as binary data to server
-                    fetch("/upload", {
-                        method: "POST",
-                        body: content,
-                        headers: {
-                            "Content-Type": file.type,
-                            "Filename": file.name,
-                        },
-                    })
-                        .then((response) => response.json())
-                        .then((json) => {
-                            console.log(json)
-                            var path = json.path.replace(/\\/g, "/")
-                            var filename = path.split("/").pop().split(".")[0]
-                            createCellWithCode(
-                                `JIVECore.Visualize.gif(JIVECore.Process.autoContrast(image_data[JIVECore.Files.loadImage!("${filename}", image_data, image_keys, "${path}")] ))`
-                            )
-                        })
-                        .catch((error) => {
-                            console.error("Error uploading file:", error)
-                        })
-                }
-            }
-            input.click()
-        }),
         createMenuItem("Open from URL", function () {}),
         createMenuItem("Open from Array (NumPy, xarray)", function () {}),
         createMenuItem("Open Dataset (folder, OME-TIFF, DICOM series)", function () {}),
