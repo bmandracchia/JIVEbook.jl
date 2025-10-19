@@ -457,7 +457,7 @@ a {
     bottom: 4rem; */
     /* border-radius: 12px; */
     width: var(--sidebar-width);
-    background-color: var(--nord-polar-night-4);
+    background-color: var(--nord-polar-night-2);
     position: fixed !important;
     z-index: 40;
     /* right: 0; */

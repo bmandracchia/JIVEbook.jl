@@ -30,8 +30,8 @@
       */
         // Fix padding issue in table of contents
         `a.H3 { padding-left: 20px !important; }
-       .plutoui-toc.aside { right: 0; background-color: var(--nord-polar-night-4) !important;}  \n` +
-        `.plutoui-toc header {background-color: var(--nord-polar-night-4) !important;} ` +
+       .plutoui-toc.aside { right: 0; background-color: var(--nord-polar-night-2) !important;}  \n` +
+        `.plutoui-toc header {background-color: var(--nord-polar-night-2) !important;} ` +
         `.plutoui-toc.aside section .toc-row.in-view {background: var(--nord-polar-night-3) !important;}` +
         /*
         Other changes
@@ -48,10 +48,10 @@
         width: 100%;
         padding: 0.5rem;
         line-height: 1.5rem;
-        background: var(--nord-polar-night-4) !important;
+        background: var(--nord-polar-night-2) !important;
       }
       pluto-logs-container {
-        background-color: var(--nord-polar-night-4) !important;
+        background-color: var(--nord-polar-night-2) !important;
       }`
 
     document.head.appendChild(customStyle)

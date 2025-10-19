@@ -2,7 +2,7 @@
     :root {
         --image-filters: invert(1) hue-rotate(180deg) contrast(0.8);
         --out-of-focus-opacity: 0.5;
-        --main-bg-color: hsl(222, 16%, 28%);
+        --main-bg-color: var(--nord-polar-night-2);
         --rule-color: rgba(255, 255, 255, 0.15);
         --kbd-border-color: #222222;
         --header-bg-color: var(--main-bg-color); /* hsl(338, 57%, 40%); */
@@ -72,10 +72,10 @@
         --shoulder-hover-bg-color: rgba(255, 255, 255, 0.05);
 
         /* Logs */
-        --pluto-logs-bg-color: var(--nord-polar-night-4);
+        --pluto-logs-bg-color: var(--main-bg-color);
         --pluto-logs-key-color: rgba(255, 255, 255, 0.6);
         --pluto-logs-progress-fill: #5f7f5b;
-        --pluto-logs-progress-bg: var(--nord-polar-night-4);
+        --pluto-logs-progress-bg: var(--main-bg-color);
         --pluto-logs-progress-border: hsl(210deg 35% 72%);
 
         --pluto-logs-info-color: var(--uva-theme);
