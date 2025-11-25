@@ -82,10 +82,11 @@ export function createFileMenu(timeoutValue) {
     // 📂 Open
     const openItems = [
         createMenuItem("Open Image", async function () {
-            createMDCellWithUI("Load Image", `$(@bind tmp PlutoUI.FilePicker())`)
+            const tmp = getVarName("tmp")
+            createMDCellWithUI("Load Image", `$(@bind ${tmp} PlutoUI.FilePicker())`)
             await resolveAfterTimeout(timeoutValue)
-            createCellWithCode(`isnothing(tmp) ? print("Select an image to load") :
-    JIVECore.Visualize.gif(image_data[JIVECore.Files.loadImage!(image_data, image_keys, tmp)])`)
+            createCellWithCode(`isnothing(${tmp}) ? print("Select an image to load") :
+    JIVECore.Visualize.gif(JIVECore.Process.autoContrast(image_data[JIVECore.Files.loadImage!(image_data, image_keys, ${tmp})]))`)
         }),
 
         createMenuItem("Open from URL", function () {}),
