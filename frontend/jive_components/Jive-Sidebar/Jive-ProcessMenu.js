@@ -1,4 +1,4 @@
-import { myAccFunc, updateAllChevrons, closeOtherAccordions } from "./jive_helpers.js"
+import { myAccFunc, createCellWithCode, createMDCellWithUI, getVarName, resolveAfterTimeout, updateAllChevrons, closeOtherAccordions } from "./jive_helpers.js"
 
 function createAccordion(title, items, idSuffix) {
     const accButton = document.createElement("button")
@@ -117,7 +117,33 @@ export function createProcessMenu(timeoutValue) {
 
     // 🔁 Deconvolution
     const deconvItems = [
-        createMenuItem("Richardson-Lucy", function () {}),
+        createMenuItem("Richardson-Lucy", async function () {
+            const sel_im = getVarName("sel_im")
+            const sel_psf = getVarName("sel_psf")
+            const iterations = getVarName("iterations")
+            const reg = getVarName("reg")
+            createMDCellWithUI(
+                "Richardson-Lucy Deconvolution",
+                `
+1. Select image to deconvolve: $(@bind ${sel_im} confirm(Select([nothing, image_keys...])))
+1. Select psf: $(@bind ${sel_psf} confirm(Select([nothing, image_keys...]))) 
+1. Select # of iterations: $(@bind ${iterations} confirm(NumberField(1:9999, default=1)))
+1. Select regularizer: $(@bind ${reg} confirm(Select([nothing => "nothing"])))`
+            )
+            await resolveAfterTimeout(timeoutValue)
+            createCellWithCode(`using FFTW`)
+            await resolveAfterTimeout(timeoutValue)
+            createCellWithCode(`
+if isnothing(${sel_im}) 
+    print("Select an image to deconvolve") 
+elseif isnothing(${sel_psf}) 
+    print("Select a PSF") 
+else
+    image_data[${sel_psf}*"_match"], _ = JIVECore.Process.imMatching(image_data[${sel_psf}], image_data[${sel_im}], method="replicate", collect_arrays=true);
+    image_data[${sel_im}*"_dec"] = JIVECore.Process.deconvRL(JIVECore.Data.im2float(image_data[${sel_im}]), JIVECore.Data.im2float(ifftshift(image_data[${sel_psf}*"_match"])), regularizer=${reg}, iterations=${iterations});
+    JIVECore.Visualize.gif(JIVECore.Process.autoContrast(image_data[${sel_im}*"_dec"]))
+end`)
+        }),
         createMenuItem("Wiener Deconvolution", function () {}),
         createMenuItem("PSF Estimation", function () {}),
         createMenuItem("Blind Deconvolution", function () {}),
